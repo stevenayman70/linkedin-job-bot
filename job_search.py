@@ -17,79 +17,45 @@ SEEN_JOBS_FILE    = os.path.join(os.path.dirname(__file__), "seen_jobs.json")
 SEEN_JOBS_TTL_DAYS = 7
 TOP_N = 10
 
-# كل عمليات البحث ريموت بس (f_WT=2، متفرضة في search_linkedin)، ومحصورة
-# في المناطق المستهدفة: شمال أوروبا (الأولوية الأولى)، الخليج، مصر، وباقي
-# أوروبا. غيّر القايمة دي حسب البلاد اللي إنت عايز تشتغل فيها.
+# ── عمليات البحث المخصصة لمجال الـ IT والشبكات والدعم الفني ─────────────────
 LINKEDIN_SEARCHES = [
-    # شمال أوروبا — الأولوية الأولى
-    {"keywords": "AI automation",             "location": "Switzerland"},
-    {"keywords": "AI automation specialist",  "location": "Switzerland"},
-    {"keywords": "AI automation",             "location": "Denmark"},
-    {"keywords": "AI automation",             "location": "Finland"},
-    {"keywords": "AI automation",             "location": "Sweden"},
-    {"keywords": "AI automation",             "location": "Norway"},
-    {"keywords": "n8n automation",            "location": "Switzerland"},
-    {"keywords": "AI business analyst",       "location": "Sweden"},
-    # الخليج
-    {"keywords": "AI automation specialist",  "location": "United Arab Emirates"},
-    {"keywords": "AI agentic developer",      "location": "United Arab Emirates"},
-    {"keywords": "RPA developer no-code",     "location": "United Arab Emirates"},
-    {"keywords": "AI automation",             "location": "Saudi Arabia"},
-    {"keywords": "business analyst AI",       "location": "Saudi Arabia"},
-    {"keywords": "AI business analyst",       "location": "United Arab Emirates"},
-    {"keywords": "AI marketing automation",   "location": "United Arab Emirates"},
-    {"keywords": "AI operations",             "location": "United Arab Emirates"},
-    {"keywords": "n8n automation",            "location": "United Arab Emirates"},
-    {"keywords": "Claude AI automation",      "location": "United Arab Emirates"},
-    {"keywords": "AI automation",             "location": "Qatar"},
-    {"keywords": "AI automation",             "location": "Kuwait"},
-    {"keywords": "AI automation",             "location": "Bahrain"},
-    {"keywords": "AI automation",             "location": "Oman"},
     # مصر
-    {"keywords": "AI automation developer",   "location": "Egypt"},
-    {"keywords": "AI business analyst",       "location": "Egypt"},
-    {"keywords": "AI automation",             "location": "Egypt"},
-    # باقي أوروبا
-    {"keywords": "AI automation",             "location": "United Kingdom"},
-    {"keywords": "AI automation",             "location": "Ireland"},
-    {"keywords": "AI automation",             "location": "Germany"},
-    {"keywords": "AI automation",             "location": "France"},
-    {"keywords": "AI automation",             "location": "Netherlands"},
-    {"keywords": "AI automation",             "location": "Spain"},
-    {"keywords": "AI automation",             "location": "Portugal"},
-    {"keywords": "AI automation",             "location": "Italy"},
-    {"keywords": "AI automation",             "location": "Poland"},
-    {"keywords": "AI automation",             "location": "Belgium"},
-    # لفّة أخيرة على الريموت عالمياً — من غير فلتر بلد، ريموت بس
-    {"keywords": "AI automation",             "location": "Worldwide", "remote_only": True},
-    {"keywords": "AI automation specialist",  "location": "Worldwide", "remote_only": True},
-    {"keywords": "n8n automation",            "location": "Worldwide", "remote_only": True},
-    {"keywords": "AI business analyst",       "location": "Worldwide", "remote_only": True},
+    {"keywords": "IT Technical Support",    "location": "Egypt"},
+    {"keywords": "IT Support Engineer",     "location": "Egypt"},
+    {"keywords": "Helpdesk Specialist",     "location": "Egypt"},
+    {"keywords": "Network Engineer",        "location": "Egypt"},
+    {"keywords": "System Administrator",    "location": "Egypt"},
+    {"keywords": "Desktop Support",         "location": "Egypt"},
+    
+    # الخليج
+    {"keywords": "IT Support Specialist",   "location": "United Arab Emirates"},
+    {"keywords": "Network Support Engineer","location": "United Arab Emirates"},
+    {"keywords": "IT Support Engineer",     "location": "Saudi Arabia"},
+    {"keywords": "System Administrator",    "location": "Saudi Arabia"},
+    {"keywords": "IT Technical Support",    "location": "Qatar"},
+    {"keywords": "IT Helpdesk",             "location": "Kuwait"},
+    
+    # شغل عن بُعد (Remote)
+    {"keywords": "IT Support Specialist",   "location": "Worldwide", "remote_only": True},
+    {"keywords": "Technical Support",       "location": "Worldwide", "remote_only": True},
+    {"keywords": "Helpdesk Tier 1 Tier 2",  "location": "Worldwide", "remote_only": True},
 ]
 
-# بحث في شركات معيّنة — بيجيب أي وظيفة مفتوحة في الشركات دي، وبعدين
-# بيفلترها حسب علاقتها بمهاراتك.
+# شركات مستهدفة
 COMPANY_SEARCHES = [
-    {"keywords": "Bayzat",    "location": "United Arab Emirates"},
-    {"keywords": "Careem",    "location": "United Arab Emirates"},
-    {"keywords": "G42",       "location": "United Arab Emirates"},
-    {"keywords": "Talabat",   "location": "United Arab Emirates"},
-    {"keywords": "Halan",     "location": "Egypt"},
     {"keywords": "Paymob",    "location": "Egypt"},
     {"keywords": "Instabug",  "location": "Egypt"},
-    {"keywords": "Tamara",    "location": "Saudi Arabia"},
-    {"keywords": "maids.cc",  "location": "United Arab Emirates"},
-    {"keywords": "Qureos",    "location": "United Arab Emirates"},
+    {"keywords": "Vodafone",  "location": "Egypt"},
+    {"keywords": "Raya",      "location": "Egypt"},
+    {"keywords": "Careem",    "location": "United Arab Emirates"},
+    {"keywords": "Bayzat",    "location": "United Arab Emirates"},
 ]
 
-# الوظيفة اللي بتيجي من بحث الشركات لازم يكون في عنوانها كلمة على الأقل من
-# دول عشان تتحسب مناسبة. ضيف الكلمات بتاعة مجالك إنت هنا.
+# الكلمات المفتاحية لمطابقة العناوين
 COMPANY_RELEVANCE_TITLE_WORDS = {
-    "automation", "ai", "agentic", "rpa", "analyst", "developer",
-    "engineer", "operations", "product", "data", "digital", "technical",
-    "software", "platform", "workflow", "process", "integration",
-    "solution", "consultant", "api", "system", "no-code", "low-code",
-    "marketing", "social", "n8n", "claude", "codex",
+    "it", "support", "technical", "helpdesk", "network", "system", 
+    "administrator", "desktop", "infrastructure", "hardware", "cisco",
+    "service", "desk", "field", "site"
 }
 
 LINKEDIN_HEADERS = {
@@ -102,97 +68,61 @@ LINKEDIN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-# ── حساب النقط ────────────────────────────────────────────────────────────────
+# ── حساب النقط والملاءمة مع الـ CV ─────────────────────────────────────────────
 
 ROLE_SCORES = {
-    # أول عنصر هو الوظيفة رقم ١ في الأولوية — دالة score_job() بتاخد أول
-    # تطابق في العنوان، يعني الترتيب مهم. حط الوظيفة اللي بتحلم بيها الأول
-    # وبأعلى رقم، وخلّي الوظايف القريبة منها عالية بس تحتها.
-    "ai automation":         40,
-    "ai automation & business analyst": 38,
-    "ai business analyst":   30,
-    "ai marketing automation": 28,
-    "marketing automation":  24,
-    "ai ba":                 26,
-    "ai operations":         24,
-    "automation specialist": 25,
-    "workflow automation":   22,
-    "ai agentic":            25,
-    "agentic developer":     25,
-    "agentic engineer":      25,
-    "rpa developer":         20,
-    "rpa engineer":          20,
-    "robotic process":       18,
-    "no-code":               18,
-    "low-code":              18,
-    "automation consultant": 20,
-    "operations analyst":    18,
-    "business analyst":      18,
-    "ai product analyst":    18,
-    "automation engineer":   20,
-    "automation developer":  20,
-    "process automation":    18,
+    "it technical support":   50,
+    "it support engineer":    48,
+    "it support specialist":  45,
+    "helpdesk specialist":    42,
+    "technical support":      40,
+    "network engineer":       38,
+    "network administrator":  38,
+    "system administrator":   35,
+    "desktop support":        30,
+    "it administrator":       30,
+    "field support":          25,
+    "it technician":          25,
 }
 
 SKILL_SCORES = {
-    "ai automation": 20, "n8n":     22, "make.com":  18, "integromat": 15,
-    "zapier":       12, "claude":    16, "anthropic":  14,
-    "codex":        14, "airtable":  10, "supabase":   10,
-    "whatsapp":      8, "chatbot":    8, "llm":         8,
-    "gpt":           6, "openai":     6, "python":      6,
-    "automation":   10, "workflow":   4, "ai agent":   10,
-    "ai ops":       12,
+    "ccna":             30,
+    "comptia a+":       30,
+    "a+":               15,
+    "cisco":            20,
+    "networking":       20,
+    "active directory": 20,
+    "windows server":   18,
+    "troubleshooting":  15,
+    "tcp/ip":           15,
+    "vpn":              12,
+    "vlan":             12,
+    "dns":              10,
+    "dhcp":             10,
+    "office 365":       12,
+    "hardware":         10,
+    "helpdesk":         10,
 }
 
 LOCATION_SCORES = {
-    # شمال أوروبا — الأولوية الأولى، بنقط أعلى من أي منطقة تانية
-    "switzerland": 26, "zurich": 26, "geneva": 26,
-    "denmark": 25, "copenhagen": 25,
-    "finland": 25, "helsinki": 25,
-    "sweden": 25, "stockholm": 25,
-    "norway": 25, "oslo": 25,
-    "ae": 20, "uae": 20, "dubai": 20, "abu dhabi": 20, "sharjah": 20, "united arab emirates": 20,
-    "sa": 18, "saudi": 18, "riyadh": 18, "jeddah": 18, "saudi arabia": 18,
-    "qa": 16, "qatar": 16, "doha": 16,
+    "eg": 25, "egypt": 25, "cairo": 25, "giza": 25,
+    "ae": 20, "uae": 20, "dubai": 20, "abu dhabi": 20,
+    "sa": 18, "saudi": 18, "riyadh": 18,
+    "qa": 16, "qatar": 16,
     "kw": 15, "kuwait": 15,
-    "bh": 15, "bahrain": 15,
-    "om": 15, "oman": 15, "muscat": 15,
-    "eg": 16, "egypt": 16, "cairo": 16,
-    "worldwide": 15, "global": 15,
-    "united kingdom": 16, "uk": 16, "london": 16,
-    "ireland": 16, "dublin": 16,
-    "germany": 16, "berlin": 16, "munich": 16,
-    "france": 16, "paris": 16,
-    "netherlands": 16, "amsterdam": 16,
-    "spain": 16, "madrid": 16, "barcelona": 16,
-    "portugal": 16, "lisbon": 16,
-    "italy": 16, "milan": 16, "rome": 16,
-    "poland": 16, "warsaw": 16,
-    "belgium": 16, "brussels": 16,
-    "remote": 14,
+    "worldwide": 15, "global": 15, "remote": 20
 }
 
 TARGET_COMPANIES = [
-    "maids", "justmop", "helperplace", "qureos", "bayzat", "huspy", "coraly",
-    "halan", "paymob", "instabug", "breadfast", "rabbit",
-    "g42", "presight", "careem", "noon", "talabat", "dubizzle",
-    "stc", "neom", "zain", "tamara",
-    "automattic", "zapier", "make.com", "n8n",
+    "vodafone", "orange", "etisalat", "raya", "paymob", "fawry",
+    "instabug", "concentrix", "teleperformance", "valu", "btech"
 ]
 
 LOCATION_CODE_MAP = {
-    "united arab emirates": "ae", "uae": "ae", "dubai": "ae", "abu dhabi": "ae",
-    "saudi arabia": "sa", "riyadh": "sa", "jeddah": "sa",
+    "united arab emirates": "ae", "uae": "ae", "dubai": "ae",
+    "saudi arabia": "sa", "riyadh": "sa",
     "egypt": "eg", "cairo": "eg",
-    "qatar": "qa", "doha": "qa",
-    "kuwait": "kw", "bahrain": "bh",
-    "oman": "om", "muscat": "om",
-    "worldwide": "global",
-    "united kingdom": "gb", "ireland": "ie",
-    "germany": "de", "france": "fr", "netherlands": "nl",
-    "spain": "es", "portugal": "pt", "italy": "it", "poland": "pl",
-    "belgium": "be", "switzerland": "ch",
-    "denmark": "dk", "finland": "fi", "sweden": "se", "norway": "no",
+    "qatar": "qa", "kuwait": "kw", "worldwide": "global"
 }
 
 
@@ -228,8 +158,6 @@ def score_job(job: dict) -> int:
         score += 10
     if is_remote:
         score += 8
-    elif any(w in title for w in ("hybrid", "remote")):
-        score += 5
     return score
 
 
@@ -239,11 +167,6 @@ def score_label(score: int) -> str:
     if score >= 30: return "Good match"
     return "Possible match"
 
-
-# ── المنافسة (عدد المتقدمين) ──────────────────────────────────────────────────
-# الوظايف اللي عليها متقدمين أقل بتاخد أولوية أعلى — دي أسهل حاجة فعلاً
-# تتقبل فيها. عدد المتقدمين بيتجاب بس لأعلى الوظايف في كل مجموعة
-# (APPLICANT_FETCH_LIMIT)، عشان عدد الطلبات الزيادة على لينكدإن يفضل محدود.
 
 APPLICANT_FETCH_LIMIT = 15
 
@@ -274,13 +197,10 @@ def applicant_bonus(count: int | None) -> int:
         return 8
     if count <= 100:
         return 2
-    return -8  # heavily-applied jobs are deprioritized, not just unboosted
+    return -8
 
 
 def enrich_with_competition(jobs: list) -> list:
-    """بيجيب عدد المتقدمين لأعلى الوظايف نقط في المجموعة، بيضيف بونص
-    المنافسة القليلة على النتيجة النهائية، وبعدين بيعيد ترتيب المجموعة
-    كلها حسب النتيجة دي."""
     ranked = sorted(jobs, key=score_job, reverse=True)
     top, rest = ranked[:APPLICANT_FETCH_LIMIT], ranked[APPLICANT_FETCH_LIMIT:]
     for job in top:
@@ -294,14 +214,11 @@ def enrich_with_competition(jobs: list) -> list:
     return sorted(top + rest, key=lambda j: j["_score"], reverse=True)
 
 
-# ── سحب البيانات من لينكدإن ───────────────────────────────────────────────────
-
 def parse_card(card, search_location: str) -> dict | None:
     link_tag = card.find("a", class_="base-card__full-link")
     if not link_tag:
         return None
     raw_url = link_tag.get("href", "")
-    # بيسيب لينك لينكدإن نضيف (بيشيل باراميترز التتبّع اللي بعد ?)
     apply_url = raw_url.split("?")[0] if raw_url else ""
     match = re.search(r"-(\d{8,})$", apply_url)
     job_id = f"li_{match.group(1)}" if match else None
@@ -316,9 +233,7 @@ def parse_card(card, search_location: str) -> dict | None:
     company  = (company_tag.get_text(strip=True) if company_tag else "").strip()
     location = (loc_tag.get_text(strip=True)     if loc_tag     else search_location).strip()
 
-    # كل سيرش بيفرض f_WT=2 (ريموت)، يعني النتايج ريموت بطبيعتها؛
-    # فحص النص متسيب بس كإشارة على الهايبرد.
-    is_remote = True
+    is_remote = "remote" in location.lower() or "remote" in title.lower()
 
     return {
         "job_id":        job_id,
@@ -338,20 +253,18 @@ def search_linkedin(keywords: str, location: str, remote_only: bool = False) -> 
     url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
     params = {
         "keywords": keywords,
-        "f_TPR":    "r259200",  # last 3 days
+        "f_TPR":    "r259200",
         "start":    0,
-        "f_WT":     "2",  # remote-work-type only — every search is remote-only now
     }
     if remote_only:
-        # من غير فلتر بلد — بيدوّر في كل الدول بدل قايمة
-        # الخليج/مصر/أوروبا المحدودة.
+        params["f_WT"] = "2"
         params["location"] = ""
     else:
         params["location"] = location
+
     try:
         resp = requests.get(url, headers=LINKEDIN_HEADERS, params=params, timeout=15)
         if resp.status_code != 200:
-            print(f"Warning: LinkedIn returned {resp.status_code} for '{keywords}' / {location}")
             return []
         soup = BeautifulSoup(resp.text, "html.parser")
         jobs = []
@@ -360,12 +273,9 @@ def search_linkedin(keywords: str, location: str, remote_only: bool = False) -> 
             if job:
                 jobs.append(job)
         return jobs
-    except requests.RequestException as e:
-        print(f"Warning: LinkedIn search failed for '{keywords}': {e}")
+    except requests.RequestException:
         return []
 
-
-# ── تليجرام ───────────────────────────────────────────────────────────────────
 
 def esc(text: str) -> str:
     return (text or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -380,18 +290,12 @@ def format_job(rank: int, job: dict) -> str:
     score      = job.get("_score", score_job(job))
     applicants = job.get("_applicants")
 
-    title_lower = (job.get("job_title") or "").lower()
-    if "hybrid" in title_lower or "hybrid" in location.lower():
-        work_mode = "Hybrid"
-    elif is_remote or "remote" in title_lower:
-        work_mode = "Remote"
-    else:
-        work_mode = location
-
+    work_mode = "Remote" if is_remote else location
     apply_url  = job.get("job_apply_link") or ""
     safe_url   = apply_url.replace("&", "&amp;")
     apply_part = f' | <a href="{safe_url}">Apply on LinkedIn</a>' if safe_url else ""
     badge      = " [TARGET CO.]" if is_target else ""
+    
     if applicants is None:
         competition = ""
     elif applicants <= 25:
@@ -433,8 +337,6 @@ def send_telegram(text: str):
             print(f"Error sending Telegram message: {e}")
 
 
-# ── حفظ الذاكرة ───────────────────────────────────────────────────────────────
-
 def check_config():
     missing = [k for k in ("TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID")
                if not os.getenv(k) or "your_" in os.getenv(k)]
@@ -457,19 +359,16 @@ def save_seen_jobs(seen: dict):
         json.dump(seen, f)
 
 
-# ── الدالة الرئيسية ───────────────────────────────────────────────────────────
-
 def main():
     check_config()
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] Starting LinkedIn job search...")
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] Starting LinkedIn IT job search...")
 
     seen = load_seen_jobs()
     this_run_ids: set = set()
     general_jobs: list = []
     company_jobs: list = []
 
-    # ── الجولة ١: البحث العام عن الوظايف ──────────────────────────────────────
-    print("--- General searches ---")
+    print("--- General IT searches ---")
     for s in LINKEDIN_SEARCHES:
         jobs = search_linkedin(s["keywords"], s["location"], s.get("remote_only", False))
         kept = 0
@@ -482,7 +381,6 @@ def main():
             kept += 1
         print(f"  '{s['keywords']}' / {s['location']} -> {kept} new")
 
-    # ── الجولة ٢: البحث في الشركات المستهدفة ──────────────────────────────────
     print("--- Target company searches ---")
     for s in COMPANY_SEARCHES:
         jobs = search_linkedin(s["keywords"], s["location"])
@@ -491,7 +389,6 @@ def main():
             job_id = job.get("job_id")
             if not job_id or job_id in seen or job_id in this_run_ids:
                 continue
-            # فلترة — بيسيب بس الوظايف اللي ليها علاقة بمجالك
             title_words = set((job.get("job_title") or "").lower().split())
             if not title_words & COMPANY_RELEVANCE_TITLE_WORDS:
                 continue
@@ -501,50 +398,36 @@ def main():
             kept += 1
         print(f"  '{s['keywords']}' / {s['location']} -> {kept} relevant")
 
-    print(f"General: {len(general_jobs)} | Company: {len(company_jobs)}")
-
     all_new = general_jobs + company_jobs
     if not all_new:
         send_telegram(
-            "<b>Daily Job Report - " + datetime.now().strftime("%b %d, %Y") + "</b>\n"
-            "No new LinkedIn jobs since last run. Check back tomorrow!"
+            "<b>Daily IT Job Report - " + datetime.now().strftime("%b %d, %Y") + "</b>\n"
+            "No new IT/Helpdesk jobs found today. Check back tomorrow!"
         )
     else:
-        # بيجيب عدد المتقدمين لأعلى وظايف كل مجموعة (بونص المنافسة
-        # القليلة)، بيعيد الترتيب، وبعدين بياخد أحسن ٥ من كل مجموعة.
-        general_jobs = enrich_with_competition(general_jobs)
-        company_jobs = enrich_with_competition(company_jobs)
-        top_general  = general_jobs[:5]
-        top_company  = company_jobs[:5]
+        enriched_general = enrich_with_competition(general_jobs)[:TOP_N]
+        enriched_company = enrich_with_competition(company_jobs)[:5]
 
-        date_str = datetime.now().strftime("%b %d, %Y")
-        lines = [
-            f"<b>Daily Job Report - {date_str}</b>\n"
-            f"Remote only | North Europe + Gulf + Egypt + Europe | LinkedIn only\n"
+        report_lines = [
+            f"<b>Daily IT Job Report - {datetime.now().strftime('%b %d, %Y')}</b>\n",
+            "<b>-- Best Role Matches --</b>"
         ]
+        for i, job in enumerate(enriched_general, 1):
+            report_lines.append(format_job(i, job))
 
-        if top_general:
-            lines.append("<b>-- Best Role Matches --</b>")
-            lines.append("")
-            for i, job in enumerate(top_general, 1):
-                lines.append(format_job(i, job))
-                lines.append("")
+        if enriched_company:
+            report_lines.append("\n<b>-- Target Company Openings --</b>")
+            for i, job in enumerate(enriched_company, 1):
+                report_lines.append(format_job(i, job))
 
-        if top_company:
-            lines.append("<b>-- Target Company Openings --</b>")
-            lines.append("")
-            for i, job in enumerate(top_company, 1):
-                lines.append(format_job(i, job))
-                lines.append("")
+        send_telegram("\n\n".join(report_lines))
 
-        send_telegram("\n".join(lines))
-        print(f"Telegram sent: {len(top_general)} role matches + {len(top_company)} company matches.")
+        now_str = datetime.now().isoformat()
+        for job in enriched_general + enriched_company:
+            seen[job["job_id"]] = now_str
+        save_seen_jobs(seen)
 
-    now_iso = datetime.now().isoformat()
-    for job_id in this_run_ids:
-        seen[job_id] = now_iso
-    save_seen_jobs(seen)
-
+    print("Done.")
 
 if __name__ == "__main__":
     main()
